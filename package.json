@@ -1,0 +1,27 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "Personal portfolio site",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "gh-pages": "^2.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "deploy": "node deploy.js",
+    "test": "elm-app test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parkercouch/portfolio.git"
+  },
+  "author": "Parker Couch",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/parkercouch/portfolio/issues"
+  },
+  "homepage": "https://github.com/parkercouch/portfolio#readme"
+}
