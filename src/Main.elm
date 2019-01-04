@@ -1,8 +1,9 @@
-module Main exposing (..)
+module Main exposing (Model, Msg(..), init, main, update, view)
 
 import Browser
-import Html exposing (Html, text, div, h1, h2, h3, img)
-import Html.Attributes exposing (src)
+import Html exposing (Html, div, h1, h2, h3, img, text)
+import Html.Attributes exposing (class, classList, src)
+
 
 
 ---- MODEL ----
@@ -36,10 +37,18 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ img [ src "/logo.svg" ] []
-        , h1 [] [ text "Portfolio" ]
-        , h3 [] [ text "Under construction (with Elm!)" ]
+    div
+        [ classList
+            [ ( "fl", True )
+            , ( "w-100", True )
+            , ( "pa2", True )
+            , ( "tc", True )
+            ]
+        ]
+        [ img [ src "/logo.svg", class "small-img" ] []
+        , h1 [ class "red-text" ] [ text "Portfolio" ]
+        , h3 [ class "purple" ]
+            [ text "Under construction (with Elm!)" ]
         ]
 
 
