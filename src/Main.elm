@@ -2,7 +2,7 @@ module Main exposing (Model, Msg(..), init, main, update, view)
 
 import Browser
 import Html exposing (Html, a, div, h1, h2, h3, img, text, p)
-import Html.Attributes exposing (class, classList, href, src)
+import Html.Attributes exposing (class, classList, href, src, style)
 import Tachyons exposing (classes)
 import Tachyons.Classes as T
 
@@ -44,7 +44,8 @@ view model =
             [ classes
                 [ T.fl
                 , T.w_100
-                , T.pa2
+                , T.pa1
+                , T.pa2_ns
                 , T.tc
                 ]
             ]
@@ -52,7 +53,13 @@ view model =
             , floatingNav
             , preview
             , projectTitle "Project 1"
-            , projectDescription "This is a description of Project 1! This does a thing."
+            , projectDescription loremText
+            , projectDescription loremText
+            , badgeRow [ deviceIcon, detailIcon, editIcon, projectOneUrl ]
+            , p [] [text loremText]
+            , p [] [text loremText]
+            , p [] [text loremText]
+            , p [] [text loremText]
             ]
         ]
 
@@ -119,11 +126,11 @@ containerDiv : List (Html Msg) -> Html Msg
 containerDiv elements =
     div
         [ classes
-            [ T.mw5
+            [ T.mw_100
             , T.mw7_ns
             , T.center
-            , T.pa3
-            , T.ph5_ns
+            , T.pa1
+            , T.ph4_ns
             ]
         ]
         elements
@@ -142,7 +149,7 @@ preview =
             [ T.w_100
             , T.pa1
             ]
-        ] [ img [ classes [ T.mw_100 ], src "assets/evening.png" ] [] ]
+        ] [ img [ classes [ T.mw_100, T.br2, T.grow, T.shadow_1 ], src "assets/evening.png" ] [] ]
 
 projectTitle : String -> Html Msg
 projectTitle titleText=
@@ -161,6 +168,52 @@ projectDescription descriptionText =
             , T.blue
             ]
     ] [ text descriptionText]
+
+badgeRow : List String -> Html Msg
+badgeRow locations =
+    let
+        repoUrl = Maybe.withDefault "#" (List.head (List.reverse locations))
+        icons = Maybe.withDefault [] (List.tail (List.reverse locations))
+        elements = List.map (\l -> badge l) icons ++ [ badgeLink repoUrl ] 
+    in
+        div [ classes [ T.pa0, T.w_100, T.h_auto, T.flex ] ] elements
+
+badge : String -> Html Msg
+badge location =
+    div [ classes
+            [ T.w_20
+            , T.h_100
+            , T.pa1
+            , T.dib
+            , T.br2
+            , T.ba
+            , T.bw2
+            , T.mh1
+            , T.grow
+            , T.shadow_2
+            ]
+        ] [ img [ classes [T.w_90], src location] [] ]
+
+badgeLink : String -> Html Msg
+badgeLink url =
+    a [ classes
+            [ T.w_40
+            , T.h_auto
+            , T.pa0
+            , T.dib
+            , T.br2
+            , T.ba
+            , T.bw2
+            , T.mh1
+            , T.bg_light_purple
+            , T.black
+            , T.no_underline
+            , T.grow_large
+            , T.code
+            , T.shadow_5
+            ]
+        , href url
+        ] [ h1 [ classes [T.w_100]] [ text "source" ] ]
 
 --- CSS Components ---
 
@@ -198,3 +251,31 @@ grow100m =
 grow50m : List String
 grow50m =
     [ T.w_50_m ]
+
+
+deviceImg =
+    "badge-device"
+
+deviceIcon =
+    "assets/device.png"
+
+pokeIcon =
+    "assets/pokeball.png"
+
+editIcon =
+    "assets/edit.png"
+
+detailIcon =
+    "assets/details.png"
+
+clearIcon =
+    "assets/clear.png"
+
+infoIcon =
+    "assets/info.png"
+
+projectOneUrl =
+    "https://parkercouch.github.io/brick-smashing-game/"
+
+loremText =
+    "Labore nisi mollit esse qui deserunt reprehenderit reprehenderit ad. Ad ea proident labore ullamco cillum. Amet exercitation sunt elit incididunt amet do cupidatat anim. Ipsum tempor ad mollit laboris ullamco minim Lorem deserunt deserunt tempor ipsum ea sunt"
