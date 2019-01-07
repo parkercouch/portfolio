@@ -1,6 +1,7 @@
 module Main exposing (Model, Msg(..), init, main, update, view)
 
 import Browser
+import Browser.Dom as BD
 import Html exposing (Html, a, div, h1, h2, h3, img, text, p)
 import Html.Attributes exposing (class, classList, href, src, style)
 import Tachyons exposing (classes)
@@ -50,6 +51,7 @@ view model =
                 ]
             ]
             [ title
+            , subheading
             , floatingNav
             , preview
             , projectTitle "Project 1"
@@ -138,10 +140,79 @@ containerDiv elements =
 
 title : Html Msg
 title =
-    div [ classes [ T.mb7_l, T.mb6_m, T.mb5_ns, T.pa4 ] ]
-        [ h1 [ classes [ T.code, T.f1 ] ] [ text "Parker" ]
-        , h1 [ classes [ T.code, T.f1 ] ] [ text "Couch" ]
+    div [ classes 
+            [ T.vh_50
+            -- , T.h_25_ns
+            -- , T.mb7_l
+            -- , T.mb6_m
+            , T.mb1
+            , T.flex_ns
+            , T.justify_center_ns
+            ,T.pa4 ] ]
+        [ h1 [ classes 
+                [ T.code
+                , T.f1
+                , T.absolute
+                , T.static_ns
+                , T.mh2_ns
+                , "first-name"
+                ]
+                ] [ text "Parker" ]
+        , h1 [ classes 
+                [ T.code
+                , T.f1
+                , T.absolute
+                , T.static_ns
+                , T.mh2_ns
+                , "last-name"
+                ]
+                ] [ text "Couch" ]
         ]
+
+subheading : Html Msg
+subheading =
+    div [ classes 
+            [ T.vh_50
+            -- , T.h_25_ns
+            , T.mb4_ns
+            , T.mb1
+            , T.flex
+            , T.flex_column
+            , T.justify_center_ns
+            , T.content_center
+            , T.pa2 
+            , T.pt6
+            , T.tr 
+            ] ]
+        [ h2 [ classes 
+                [ T.code
+                , T.f3
+                , T.ma0
+                , T.tl_ns
+                , T.order_0
+                ]
+                ] [ text "Artist" ]
+        , h2 [ classes 
+                [ T.code
+                , T.f3
+                , T.ma0
+                , T.tr_ns
+                , T.order_1
+                , T.order_2_ns
+                ]
+                ] [ text "Explorer" ]
+        , h2 [ classes 
+                [ T.code
+                , T.f3
+                , T.ma0
+                , T.tc_ns
+                , T.light_purple
+                , T.order_2
+                , T.order_1_ns
+                ]
+                ] [ text "Developer" ]
+        ]
+
 
 preview : Html Msg
 preview =
@@ -211,6 +282,8 @@ badgeLink url =
             , T.grow_large
             , T.code
             , T.shadow_5
+            , T.flex
+            , T.items_center
             ]
         , href url
         ] [ h1 [ classes [T.w_100]] [ text "source" ] ]
