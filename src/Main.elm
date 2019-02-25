@@ -1,24 +1,60 @@
-module Main exposing (Model, Msg(..), init, main, update, view)
+module Main exposing (Model, Msg(..), init, main, subscriptions, update, view, viewLink)
 
+import Art
+import Blog
 import Browser
-import Browser.Dom as BD
-import Html exposing (Html, a, div, h1, h2, h3, img, text, p)
-import Html.Attributes exposing (class, classList, href, src, style)
-import Tachyons exposing (classes)
-import Tachyons.Classes as T
+import Browser.Navigation as Nav
+import Home
+import Html exposing (Html, a, b, div, h1, h4, img, li, p, text, ul)
+import Html.Attributes exposing (href, src)
+import Portfolio
+import Url
+import Url.Parser as Parser
+    exposing
+        ( (</>)
+        , Parser
+        , fragment
+        , int
+        , map
+        , oneOf
+        , parse
+        , s
+        , string
+        , top
+        )
+import Utils exposing (Session)
+
+
+toSession : Model -> Session
+toSession model =
+    case model of
+        HomeMod home ->
+            Home.toSession home
+
+        ArtMod art ->
+            Art.toSession art
+
+        BlogMod blog ->
+            Blog.toSession blog
+
+        PortfolioMod portfolio ->
+            Portfolio.toSession portfolio
 
 
 
 ---- MODEL ----
 
 
-type alias Model =
-    {}
+type Model
+    = HomeMod Home.Model
+    | ArtMod Art.Model
+    | BlogMod Blog.Model
+    | PortfolioMod Portfolio.Model
 
 
-init : ( Model, Cmd Msg )
-init =
-    ( {}, Cmd.none )
+init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
+init flags url key =
+    ( HomeMod (Home.Model { key = key, url = url }), Cmd.none )
 
 
 
@@ -27,43 +63,168 @@ init =
 
 type Msg
     = NoOp
+    | LinkClicked Browser.UrlRequest
+    | UrlChanged Url.Url
+    | GotHomeMsg Home.Msg
+    | GotArtMsg Art.Msg
+    | GotBlogMsg Blog.Msg
+    | GotPortfolioMsg Portfolio.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case ( msg, model ) of
+        ( LinkClicked urlRequest, _ ) ->
+            case urlRequest of
+                Browser.Internal url ->
+                    ( model, Nav.pushUrl (toSession model).key (Url.toString url) )
+
+                Browser.External href ->
+                    ( model, Nav.load href )
+
+        ( UrlChanged url, _ ) ->
+            changeRouteTo (fromUrl url) model
+
+        ( GotHomeMsg subMsg, HomeMod home ) ->
+            Home.update subMsg home
+                |> updateWith HomeMod GotHomeMsg model
+
+        ( GotArtMsg subMsg, ArtMod art ) ->
+            Art.update subMsg art
+                |> updateWith ArtMod GotArtMsg model
+
+        ( GotBlogMsg subMsg, BlogMod blog ) ->
+            Blog.update subMsg blog
+                |> updateWith BlogMod GotBlogMsg model
+
+        ( GotPortfolioMsg subMsg, PortfolioMod portfolio ) ->
+            Portfolio.update subMsg portfolio
+                |> updateWith PortfolioMod GotPortfolioMsg model
+
+        ( NoOp, _ ) ->
+            ( model, Cmd.none )
+
+        ( _, _ ) ->
+            ( model, Cmd.none )
+
+
+updateWith : (subModel -> Model) -> (subMsg -> Msg) -> Model -> ( subModel, Cmd subMsg ) -> ( Model, Cmd Msg )
+updateWith toModel toMsg model ( subModel, subCmd ) =
+    ( toModel subModel
+    , Cmd.map toMsg subCmd
+    )
+
+
+
+---- SUBSCRIPTIONS ----
+
+
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+    Sub.none
 
 
 
 ---- VIEW ----
 
 
-view : Model -> Html Msg
+view : Model -> Browser.Document Msg
 view model =
-    containerDiv
-        [ div
-            [ classes
-                [ T.fl
-                , T.w_100
-                , T.pa1
-                , T.pa2_ns
-                , T.tc
-                ]
-            ]
-            [ title
-            , subheading
-            , floatingNav
-            , preview
-            , projectTitle "Project 1"
-            , projectDescription loremText
-            , projectDescription loremText
-            , badgeRow [ deviceIcon, detailIcon, editIcon, projectOneUrl ]
-            , p [] [text loremText]
-            , p [] [text loremText]
-            , p [] [text loremText]
-            , p [] [text loremText]
-            ]
+    case model of
+        HomeMod home ->
+            { title = "Parker Couch"
+            , body = List.map (Html.map GotHomeMsg) (Home.view home)
+            }
+
+        ArtMod art ->
+            { title = "Art - Parker Couch"
+            , body = List.map (Html.map GotArtMsg) (Art.view art)
+            }
+
+        BlogMod blog ->
+            { title = "Blog - Parker Couch"
+            , body = List.map (Html.map GotBlogMsg) (Blog.view blog)
+            }
+
+        PortfolioMod portfolio ->
+            { title = "Portfolio - Parker Couch"
+            , body = List.map (Html.map GotPortfolioMsg) (Portfolio.view portfolio)
+            }
+
+
+viewLink : String -> Html msg
+viewLink path =
+    li [] [ a [ href path ] [ text path ] ]
+
+
+type Route
+    = NotFound
+    | Home
+    | Art
+    | ArtGallery Int
+    | Blog
+    | BlogPost Int
+    | Portfolio
+    | ProjectDetails Int
+
+
+parser : Parser (Route -> a) a
+parser =
+    oneOf
+        [ map Home top
+        , map Art (s "art" </> top)
+        , map ArtGallery (s "art" </> int)
+        , map Blog (s "blog" </> top)
+        , map BlogPost (s "blog" </> int)
+        , map Portfolio (s "portfolio" </> top)
+        , map ProjectDetails (s "portfolio" </> int)
         ]
+
+
+fromUrl : Url.Url -> Route
+fromUrl url =
+    Maybe.withDefault NotFound (Parser.parse parser url)
+
+
+changeRouteTo : Route -> Model -> ( Model, Cmd Msg )
+changeRouteTo route model =
+    let
+        session =
+            toSession model
+    in
+    case route of
+        -- TODO: make a better redirect
+        NotFound ->
+            Home.init session
+                |> updateWith HomeMod GotHomeMsg model
+
+        Home ->
+            Home.init session
+                |> updateWith HomeMod GotHomeMsg model
+
+        Art ->
+            Art.init session
+                |> updateWith ArtMod GotArtMsg model
+
+        ArtGallery galleryId ->
+            Art.init session
+                |> updateWith ArtMod GotArtMsg model
+
+        Blog ->
+            Blog.init session
+                |> updateWith BlogMod GotBlogMsg model
+
+        BlogPost blogId ->
+            Blog.init session
+                |> updateWith BlogMod GotBlogMsg model
+
+        Portfolio ->
+            Portfolio.init session
+                |> updateWith PortfolioMod GotPortfolioMsg model
+
+        ProjectDetails projectId ->
+            Portfolio.init session
+                |> updateWith PortfolioMod GotPortfolioMsg model
 
 
 
@@ -72,283 +233,11 @@ view model =
 
 main : Program () Model Msg
 main =
-    Browser.element
-        { view = view
-        , init = \_ -> init
+    Browser.application
+        { init = init
+        , onUrlChange = UrlChanged
+        , onUrlRequest = LinkClicked
+        , subscriptions = subscriptions
         , update = update
-        , subscriptions = always Sub.none
+        , view = view
         }
-
-
-
---- View Elements ---
-
-
-floatingNav : Html Msg
-floatingNav =
-    div
-        [ classes
-            [ T.mw9
-            , T.center
-            , T.ph3_ns
-            , T.purple
-            ]
-        ]
-        [ div
-            [ classes [ T.cf, T.ph2_ns ] ]
-            [ div
-                [ classes (navButtonContainer ++ [T.w_100_m]) ]
-                [ a
-                    [ classes (navButton ++ grow50m)
-                    , href "#"
-                    ]
-                    [ text "Resume" ]
-                ]
-            , div
-                [ classes (navButtonContainer ++ grow50m) ]
-                [ a
-                    [ classes navButton
-                    , href "#"
-                    ]
-                    [ text "Linkedin" ]
-                ]
-            , div
-                [ classes (navButtonContainer ++ grow50m) ]
-                [ a
-                    [ classes navButton
-                    , href "#"
-                    ]
-                    [ text "Github" ]
-                ]
-            ]
-        ]
-
-
-containerDiv : List (Html Msg) -> Html Msg
-containerDiv elements =
-    div
-        [ classes
-            [ T.mw_100
-            , T.mw7_ns
-            , T.center
-            , T.pa1
-            , T.ph4_ns
-            ]
-        ]
-        elements
-
-
-title : Html Msg
-title =
-    div [ classes 
-            [ T.vh_50
-            -- , T.h_25_ns
-            -- , T.mb7_l
-            -- , T.mb6_m
-            , T.mb1
-            , T.flex_ns
-            , T.justify_center_ns
-            ,T.pa4 ] ]
-        [ h1 [ classes 
-                [ T.code
-                , T.f1
-                , T.absolute
-                , T.static_ns
-                , T.mh2_ns
-                , "first-name"
-                ]
-                ] [ text "Parker" ]
-        , h1 [ classes 
-                [ T.code
-                , T.f1
-                , T.absolute
-                , T.static_ns
-                , T.mh2_ns
-                , "last-name"
-                ]
-                ] [ text "Couch" ]
-        ]
-
-subheading : Html Msg
-subheading =
-    div [ classes 
-            [ T.vh_50
-            -- , T.h_25_ns
-            , T.mb4_ns
-            , T.mb1
-            , T.flex
-            , T.flex_column
-            , T.justify_center_ns
-            , T.content_center
-            , T.pa2 
-            , T.pt6
-            , T.tr 
-            ] ]
-        [ h2 [ classes 
-                [ T.code
-                , T.f3
-                , T.ma0
-                , T.tl_ns
-                , T.order_0
-                ]
-                ] [ text "Artist" ]
-        , h2 [ classes 
-                [ T.code
-                , T.f3
-                , T.ma0
-                , T.tr_ns
-                , T.order_1
-                , T.order_2_ns
-                ]
-                ] [ text "Explorer" ]
-        , h2 [ classes 
-                [ T.code
-                , T.f3
-                , T.ma0
-                , T.tc_ns
-                , T.light_purple
-                , T.order_2
-                , T.order_1_ns
-                ]
-                ] [ text "Developer" ]
-        ]
-
-
-preview : Html Msg
-preview =
-    div [ classes 
-            [ T.w_100
-            , T.pa1
-            ]
-        ] [ img [ classes [ T.mw_100, T.br2, T.grow, T.shadow_1 ], src "assets/evening.png" ] [] ]
-
-projectTitle : String -> Html Msg
-projectTitle titleText=
-    h3 [ classes
-            [ T.w_100 
-            , T.f3
-            , T.purple
-            ]
-    ] [ text titleText]
-
-projectDescription : String -> Html Msg
-projectDescription descriptionText =
-    p [ classes
-            [ T.w_100 
-            , T.f6
-            , T.blue
-            ]
-    ] [ text descriptionText]
-
-badgeRow : List String -> Html Msg
-badgeRow locations =
-    let
-        repoUrl = Maybe.withDefault "#" (List.head (List.reverse locations))
-        icons = Maybe.withDefault [] (List.tail (List.reverse locations))
-        elements = List.map (\l -> badge l) icons ++ [ badgeLink repoUrl ] 
-    in
-        div [ classes [ T.pa0, T.w_100, T.h_auto, T.flex ] ] elements
-
-badge : String -> Html Msg
-badge location =
-    div [ classes
-            [ T.w_20
-            , T.h_100
-            , T.pa1
-            , T.dib
-            , T.br2
-            , T.ba
-            , T.bw2
-            , T.mh1
-            , T.grow
-            , T.shadow_2
-            ]
-        ] [ img [ classes [T.w_90], src location] [] ]
-
-badgeLink : String -> Html Msg
-badgeLink url =
-    a [ classes
-            [ T.w_40
-            , T.h_auto
-            , T.pa0
-            , T.dib
-            , T.br2
-            , T.ba
-            , T.bw2
-            , T.mh1
-            , T.bg_light_purple
-            , T.black
-            , T.no_underline
-            , T.grow_large
-            , T.code
-            , T.shadow_5
-            , T.flex
-            , T.items_center
-            ]
-        , href url
-        ] [ h1 [ classes [T.w_100]] [ text "source" ] ]
-
---- CSS Components ---
-
-
-navButtonContainer : List String
-navButtonContainer =
-    [ T.fl
-    , T.w_third_l
-    , T.w_50_m
-    , T.w_100
-    , T.pa3
-    ]
-
-
-navButton : List String
-navButton =
-    [ T.f4
-    , T.link
-    , T.dim
-    , T.br2
-    , T.w_100
-    , T.pv4
-    , T.mb2
-    , T.dib
-    , T.white
-    , T.bg_light_purple
-    ]
-
-
-grow100m : List String
-grow100m =
-    [ T.w_100_m ]
-
-
-grow50m : List String
-grow50m =
-    [ T.w_50_m ]
-
-
-deviceImg =
-    "badge-device"
-
-deviceIcon =
-    "assets/device.png"
-
-pokeIcon =
-    "assets/pokeball.png"
-
-editIcon =
-    "assets/edit.png"
-
-detailIcon =
-    "assets/details.png"
-
-clearIcon =
-    "assets/clear.png"
-
-infoIcon =
-    "assets/info.png"
-
-projectOneUrl =
-    "https://parkercouch.github.io/brick-smashing-game/"
-
-loremText =
-    "Labore nisi mollit esse qui deserunt reprehenderit reprehenderit ad. Ad ea proident labore ullamco cillum. Amet exercitation sunt elit incididunt amet do cupidatat anim. Ipsum tempor ad mollit laboris ullamco minim Lorem deserunt deserunt tempor ipsum ea sunt"
