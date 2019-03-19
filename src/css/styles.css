@@ -1,10 +1,14 @@
 body {
-  background-color: #E8FDF5;
+  color: #333;
+  background-color: #cdecff;
+  font-family:
+    Consolas,
+    monaco,
+    monospace;
 }
 
-
-.red-text {
-  color: red;
+.art-img {
+  max-height: 35rem;
 }
 
 .small-img {
@@ -14,6 +18,11 @@ body {
 
 .badge-device {
   background-image: url('../../public/assets/device.png');
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
 }
 
 .first-name {

@@ -137,17 +137,17 @@ view model =
             }
 
         ArtMod art ->
-            { title = "Art - Parker Couch"
+            { title = "Artist - Parker Couch"
             , body = List.map (Html.map GotArtMsg) (Art.view art)
             }
 
         BlogMod blog ->
-            { title = "Blog - Parker Couch"
+            { title = "Explorer - Parker Couch"
             , body = List.map (Html.map GotBlogMsg) (Blog.view blog)
             }
 
         PortfolioMod portfolio ->
-            { title = "Portfolio - Parker Couch"
+            { title = "Developer - Parker Couch"
             , body = List.map (Html.map GotPortfolioMsg) (Portfolio.view portfolio)
             }
 

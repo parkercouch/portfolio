@@ -6,6 +6,7 @@ import Browser.Navigation as Nav
 import Html exposing (Html, a, button, div, h1, h2, h3, header, img, nav, p, text)
 import Html.Attributes exposing (class, classList, href, src, style)
 import Html.Events exposing (onClick)
+import Nav exposing (NavLink, viewHeader)
 import Tachyons exposing (classes)
 import Tachyons.Classes as T
 import Utils exposing (Session)
@@ -51,29 +52,39 @@ update msg model =
             ( model, Cmd.none )
 
 
+
+---- VIEW ----
+
+
 view : Model -> List (Html Msg)
 view model =
-    [ containerDiv
-        [ viewHeader
-        , div
-            [ classes
-                [ T.fl
-                , T.w_100
-                , T.pa1
-                , T.pa2_ns
-                , T.tc
-                ]
-            ]
-            [ h1 [] [ text "Portfolio" ]
-            , p [] [ text "Under Construction" ]
-            , projects projectsList
-            ]
+    [ viewHeader links
+    , mainContainer
+        [ h1 [] [ text "Portfolio" ]
+        , p [] [ text "Under Construction" ]
+        , projects projectsList
         ]
     ]
 
 
+mainContainer : List (Html Msg) -> Html Msg
+mainContainer elements =
+    Html.main_
+        [ classes
+            [ T.fl
+            , T.w_100
+            , T.tc
+            ]
+        ]
+        elements
 
--- }
+
+links : List NavLink
+links =
+    [ NavLink "Artist" "/art" False
+    , NavLink "Explorer" "/blog" False
+    , NavLink "Developer" "" True
+    ]
 
 
 containerDiv : List (Html Msg) -> Html Msg
@@ -89,40 +100,6 @@ containerDiv elements =
             ]
         ]
         elements
-
-
-navLink : String -> String -> Bool -> Html Msg
-navLink title url selected =
-    a
-        [ classes
-            [ T.dib
-            , T.h2
-            , T.no_underline
-            , T.dim
-            , T.pa1
-            , T.br2
-            , T.lh_title
-            ]
-        , classList
-            [ ( T.purple, selected )
-            , ( T.black, not selected )
-            , ( T.self_end, selected )
-            ]
-        , href url
-        ]
-        [ text title ]
-
-
-viewHeader : Html Msg
-viewHeader =
-    header [ classes [ T.flex, T.justify_between, T.pv2, T.ph1, T.h3, T.shadow_5 ] ]
-        [ h1 [ classes [ T.dib, T.f3, T.ma0, T.pa0 ] ] [ text "ParkerCouch" ]
-        , nav [ classes [ T.dib, T.flex, T.flex_row, T.ml2 ] ]
-            [ navLink "Artist" "/art" False
-            , navLink "Explorer" "/blog" False
-            , navLink "Developer" "" True
-            ]
-        ]
 
 
 projects : List Project -> Html Msg
@@ -150,7 +127,7 @@ preview imgUrl =
             , T.ml_auto
             ]
         ]
-        [ img [ classes [ T.mw_100, T.br2, T.shadow_1 ], src imgUrl ] [] ]
+        [ img [ classes [ T.mw_100, T.br2, T.shadow_5 ], src imgUrl ] [] ]
 
 
 projectTitle : String -> Html Msg
@@ -198,11 +175,10 @@ badge location =
             , T.pa1
             , T.dib
             , T.br2
-            , T.ba
             , T.bw2
             , T.mh1
-            , T.grow
-            , T.shadow_2
+            , T.shadow_hover
+            , T.shadow_5
             ]
         ]
         [ img [ classes [ T.h2 ], src location ] [] ]
@@ -217,13 +193,14 @@ badgeLink url =
             , T.pa0
             , T.dib
             , T.br2
-            , T.ba
-            , T.bw2
+
+            -- , T.ba
+            -- , T.bw2
             , T.mh1
             , T.bg_light_purple
             , T.black
             , T.no_underline
-            , T.grow_large
+            , T.grow
             , T.code
             , T.shadow_5
             , T.flex
@@ -345,8 +322,8 @@ projectThree =
 
 projectFour : Project
 projectFour =
-    { name = "???"
-    , description = "Who knows?"
+    { name = "Siam Online"
+    , description = "Multiplayer game made with Elm, Elixir, and Phoenix"
     , liveUrl = ""
     , repoUrl = ""
     , img = "assets/square.png"

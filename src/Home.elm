@@ -43,18 +43,8 @@ update msg model =
 view : Model -> List (Html Msg)
 view model =
     [ containerDiv
-        [ div
-            [ classes
-                [ T.fl
-                , T.w_100
-                , T.pa1
-                , T.pa2_ns
-                , T.tc
-                ]
-            ]
-            [ title
-            , subheading
-            ]
+        [ title
+        , subheading
         ]
     ]
 
@@ -63,12 +53,14 @@ containerDiv : List (Html Msg) -> Html Msg
 containerDiv elements =
     div
         [ classes
-            [ T.mw_100
-            , T.vh_100
-            , T.mw7_ns
-            , T.center
-            , T.pa1
-            , T.ph4_ns
+            -- [ T.mw_100
+            -- , T.vh_100
+            -- , T.mw7_ns
+            -- , T.center
+            -- , T.pa1
+            -- , T.ph4_ns
+            [ "container"
+            , "home-bg-image"
             ]
         ]
         elements
