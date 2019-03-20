@@ -3,7 +3,7 @@ module Portfolio exposing (Model, Msg(..), containerDiv, init, toSession, update
 import Browser
 import Browser.Dom as BD
 import Browser.Navigation as Nav
-import Html exposing (Html, a, button, div, h1, h2, h3, header, img, nav, p, text)
+import Html exposing (Html, a, button, div, h1, h2, h3, header, img, nav, p, section, text)
 import Html.Attributes exposing (class, classList, href, src, style)
 import Html.Events exposing (onClick)
 import Nav exposing (NavLink, viewHeader)
@@ -60,8 +60,7 @@ view : Model -> List (Html Msg)
 view model =
     [ viewHeader links
     , mainContainer
-        [ h1 [] [ text "Portfolio" ]
-        , p [] [ text "Under Construction" ]
+        [ h1 [ classes [ T.mw7, T.center, T.tl, T.ph2, T.f1 ] ] [ text "Projects" ]
         , projects projectsList
         ]
     ]
@@ -110,51 +109,37 @@ projects projectList =
 
 projectCard : Project -> Html Msg
 projectCard project =
-    div [ classes [ T.mb5 ] ]
-        [ projectTitle project.name
-        , preview project.img
-        , projectDescription project.description
-        , badgeRow project.badges project.repoUrl
+    section [ classes [ T.pb4, T.mt4, T.ph2_ns ] ]
+        [ bannerTitle project.name
+        , projectDetails project
         ]
 
 
-preview : String -> Html Msg
-preview imgUrl =
+bannerTitle : String -> Html Msg
+bannerTitle title =
     div
         [ classes
-            [ T.w_75
-            , T.pa1
-            , T.ml_auto
+            [ T.flex
+            , T.items_center
+            , T.justify_end
+            , T.mw7
+            , T.center
+            , T.h3
+            , T.h4_ns
+            , T.ph2
             ]
         ]
-        [ img [ classes [ T.mw_100, T.br2, T.shadow_5 ], src imgUrl ] [] ]
-
-
-projectTitle : String -> Html Msg
-projectTitle titleText =
-    h2
-        [ classes
-            [ T.code
-            , T.w_100
-            , T.f2
-            , T.black
-            , T.tl
-            ]
+        [ h2 [ classes [ T.f2 ] ] [ text title ]
         ]
-        [ text titleText ]
 
 
-projectDescription : String -> Html Msg
-projectDescription descriptionText =
-    p
-        [ classes
-            [ T.w_100
-            , T.f4
-            , T.black
-            , T.tl
-            ]
+projectDetails : Project -> Html Msg
+projectDetails project =
+    div [ classes [ T.mw7, T.center ] ]
+        [ img [ src project.img, classes [ T.shadow_5, T.br1, "art-img" ] ] []
+        , p [] [ text project.description ]
+        , badgeRow project.badges project.repoUrl
         ]
-        [ text descriptionText ]
 
 
 badgeRow : List String -> String -> Html Msg
@@ -163,7 +148,7 @@ badgeRow icons repoUrl =
         elements =
             List.map (\l -> badge l) icons ++ [ badgeLink repoUrl ]
     in
-    div [ classes [ T.pa0, T.w_100, T.h_auto, T.flex ] ] elements
+    div [ classes [ T.pa0, T.mw6, T.center, T.h_auto, T.flex ] ] elements
 
 
 badge : String -> Html Msg
@@ -179,6 +164,8 @@ badge location =
             , T.mh1
             , T.shadow_hover
             , T.shadow_5
+            , T.bg_washed_blue
+            , "default-cursor"
             ]
         ]
         [ img [ classes [ T.h2 ], src location ] [] ]
@@ -193,9 +180,6 @@ badgeLink url =
             , T.pa0
             , T.dib
             , T.br2
-
-            -- , T.ba
-            -- , T.bw2
             , T.mh1
             , T.bg_light_purple
             , T.black
@@ -207,65 +191,45 @@ badgeLink url =
             , T.items_center
             ]
         , href url
+        , Html.Attributes.target "_blank"
         ]
-        [ h1 [ classes [ T.w_100, T.f2_l, T.f3 ] ] [ text "source" ] ]
+        [ h1 [ classes [ T.w_100, T.f3_l, T.f3 ] ] [ text "source" ] ]
 
 
-
---- CSS Components ---
-
-
-navButtonContainer : List String
-navButtonContainer =
-    [ T.fl
-    , T.w_third_l
-    , T.w_50_m
-    , T.w_100
-    , T.pa3
-    ]
+nodeIcon =
+    "assets/icons/nodejs-icon.png"
 
 
-navButton : List String
-navButton =
-    [ T.f4
-    , T.link
-    , T.dim
-    , T.br2
-    , T.w_100
-    , T.pv4
-    , T.mb2
-    , T.dib
-    , T.white
-    , T.bg_light_purple
-    ]
+htmlIcon =
+    "assets/icons/html-5-icon.png"
 
 
-deviceIcon =
-    "assets/device.png"
+jsIcon =
+    "assets/icons/javascript-icon.png"
 
 
-pokeIcon =
-    "assets/pokeball.png"
+postgresIcon =
+    "assets/icons/postgres-icon.png"
 
 
-editIcon =
-    "assets/edit.png"
+reactIcon =
+    "assets/icons/react-icon.png"
 
 
-detailIcon =
-    "assets/details.png"
+reduxIcon =
+    "assets/icons/redux-icon.png"
 
 
-clearIcon =
-    "assets/clear.png"
+socketIoIcon =
+    "assets/icons/socketio-icon.gif"
 
 
-infoIcon =
-    "assets/info.png"
+mongoDbIcon =
+    "assets/icons/mongodb-icon.png"
 
 
-loremText =
-    "Labore nisi mollit esse qui deserunt reprehenderit reprehenderit ad. Ad ea proident labore ullamco cillum. Amet exercitation sunt elit incididunt amet do cupidatat anim. Ipsum tempor ad mollit laboris ullamco minim Lorem deserunt deserunt tempor ipsum ea sunt"
+cssIcon =
+    "assets/icons/css-icon.png"
 
 
 type alias Project =
@@ -283,7 +247,8 @@ projectsList =
     [ projectOne
     , projectTwo
     , projectThree
-    , projectFour
+
+    -- , projectFour
     ]
 
 
@@ -293,8 +258,8 @@ projectOne =
     , description = "Breakout style game created with Kontra.js"
     , liveUrl = "https://parkercouch.github.io/brick-smashing-game/"
     , repoUrl = "https://github.com/parkercouch/brick-smashing-game"
-    , img = "assets/square.png"
-    , badges = [ deviceIcon, pokeIcon, infoIcon ]
+    , img = "assets/projects/just_smash_bricks_video.gif"
+    , badges = [ htmlIcon, cssIcon, jsIcon ]
     }
 
 
@@ -304,8 +269,8 @@ projectTwo =
     , description = "Social media to find hiking partners"
     , liveUrl = "https://hikr-app.herokuapp.com/"
     , repoUrl = "https://github.com/parkercouch/hikr"
-    , img = "assets/square.png"
-    , badges = [ deviceIcon, pokeIcon, infoIcon ]
+    , img = "assets/projects/hikr_video.gif"
+    , badges = [ nodeIcon, postgresIcon, socketIoIcon ]
     }
 
 
@@ -315,8 +280,8 @@ projectThree =
     , description = "Dashboard for instructors and students to keep track of assignments."
     , liveUrl = "http://syllaboard.herokuapp.com/"
     , repoUrl = "https://github.com/parkercouch/syllaboard-client"
-    , img = "assets/square.png"
-    , badges = [ deviceIcon, pokeIcon, infoIcon ]
+    , img = "assets/projects/syllaboard_video.gif"
+    , badges = [ reactIcon, reduxIcon, mongoDbIcon ]
     }
 
 
@@ -327,5 +292,5 @@ projectFour =
     , liveUrl = ""
     , repoUrl = ""
     , img = "assets/square.png"
-    , badges = [ deviceIcon, pokeIcon, infoIcon ]
+    , badges = [ htmlIcon, htmlIcon, htmlIcon ]
     }
