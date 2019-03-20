@@ -1,4 +1,4 @@
-module Home exposing (Model, Msg(..), containerDiv, init, subheading, title, toSession, update, view)
+module Home exposing (Model, Msg(..), init, subheading, title, toSession, update, view)
 
 import Browser
 import Browser.Dom as BD
@@ -42,25 +42,20 @@ update msg model =
 
 view : Model -> List (Html Msg)
 view model =
-    [ containerDiv
+    [ mainContainer
         [ title
         , subheading
         ]
     ]
 
 
-containerDiv : List (Html Msg) -> Html Msg
-containerDiv elements =
-    div
+mainContainer : List (Html Msg) -> Html Msg
+mainContainer elements =
+    Html.main_
         [ classes
-            -- [ T.mw_100
-            -- , T.vh_100
-            -- , T.mw7_ns
-            -- , T.center
-            -- , T.pa1
-            -- , T.ph4_ns
-            [ "container"
-            , "home-bg-image"
+            [ T.fl
+            , T.w_100
+            , T.tc
             ]
         ]
         elements
@@ -102,6 +97,10 @@ title =
         ]
 
 
+
+-- code f3 ma0 h3 w5 pt3 tc-ns order-0 no-underline mv2 pr3 shadow-5 shadow-hover br1 black order-0 self-start-ns
+
+
 subHeadingLink : List String
 subHeadingLink =
     [ T.code
@@ -110,8 +109,7 @@ subHeadingLink =
     , T.h3
     , T.w5
     , T.pt3
-    , T.h_auto_ns
-    , T.tl_ns
+    , T.tc_ns
     , T.order_0
     , T.no_underline
     , T.mv2
@@ -126,7 +124,8 @@ subheading : Html Msg
 subheading =
     div
         [ classes
-            [ T.mt6_ns
+            [ T.mw6
+            , T.center
             , T.mb4_ns
             , T.mb1
             , T.flex
@@ -135,7 +134,6 @@ subheading =
             , T.content_center
             , T.items_end
             , T.pa2_ns
-            , T.pt6_ns
             , T.ph3
             , T.pt3
             , T.tr
@@ -145,7 +143,7 @@ subheading =
             [ classes
                 (subHeadingLink
                     ++ [ T.black
-                       , T.order_0
+                       , T.self_start_ns
                        ]
                 )
             , href "/art"
@@ -155,8 +153,7 @@ subheading =
             [ classes
                 (subHeadingLink
                     ++ [ T.black
-                       , T.order_1
-                       , T.order_2_ns
+                       , T.self_center_ns
                        ]
                 )
             , href "/blog/1"
@@ -166,8 +163,7 @@ subheading =
             [ classes
                 (subHeadingLink
                     ++ [ T.light_purple
-                       , T.order_2
-                       , T.order_1_ns
+                       , T.self_end_ns
                        ]
                 )
             , href "/portfolio"

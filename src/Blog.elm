@@ -27,9 +27,9 @@ toSession model =
     model.session
 
 
-init : Session -> ( Model, Cmd Msg )
-init session =
-    ( Model session 0, Cmd.none )
+init : Session -> Int -> ( Model, Cmd Msg )
+init session id =
+    ( Model session id, Cmd.none )
 
 
 

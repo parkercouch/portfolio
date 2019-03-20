@@ -1,6 +1,11 @@
+:root {
+  --main-text-color: #333;
+  --bg-color: #cdecff;
+}
+
 body {
-  color: #333;
-  background-color: #cdecff;
+  color: var(--main-text-color, black);
+  background-color: var(--bg-color, skyblue);
   font-family:
     Consolas,
     monaco,
@@ -13,20 +18,6 @@ body {
 
 .art-img {
   max-height: 35rem;
-}
-
-.small-img {
-  margin: 20px 0;
-  max-width: 200px;
-}
-
-.badge-device {
-  background-image: url('../../public/assets/device.png');
-}
-
-.container {
-  width: 100%;
-  height: 100vh;
 }
 
 .first-name {

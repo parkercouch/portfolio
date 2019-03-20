@@ -1,6 +1,5 @@
 Personal Portfolio Site
 
-*Under Construction*
-
 TODO:
-* Everything
+* Add Adventure Log
+* Add zoom/focus feature for artwork

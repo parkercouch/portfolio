@@ -54,6 +54,6 @@ viewHeader links =
             , T.pa4_ns
             ]
         ]
-        [ h1 [ classes [ T.dib, T.f3, T.ma0, T.pa0 ] ] [ text "Parker Couch" ]
+        [ a [ href "/", classes [ T.dib, T.f3, T.ma0, T.pa0, T.no_underline, T.pointer, T.dark_gray ] ] [ text "Parker Couch" ]
         , nav [ classes [ T.dib, T.flex, T.flex_row, T.ml2 ] ] parsedLinks
         ]

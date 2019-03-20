@@ -28,9 +28,17 @@ toSession model =
     model.session
 
 
-init : Session -> ( Model, Cmd Msg )
-init session =
-    ( Model session False 0, Cmd.none )
+init : Session -> Int -> ( Model, Cmd Msg )
+init session id =
+    let
+        zoom =
+            if id /= 0 then
+                True
+
+            else
+                False
+    in
+    ( Model session zoom id, Cmd.none )
 
 
 
@@ -182,39 +190,47 @@ badgeLink url =
 
 
 nodeIcon =
-    "assets/icons/nodejs-icon.png"
+    "/assets/icons/nodejs-icon.png"
 
 
 htmlIcon =
-    "assets/icons/html-5-icon.png"
+    "/assets/icons/html-5-icon.png"
 
 
 jsIcon =
-    "assets/icons/javascript-icon.png"
+    "/assets/icons/javascript-icon.png"
 
 
 postgresIcon =
-    "assets/icons/postgres-icon.png"
+    "/assets/icons/postgres-icon.png"
 
 
 reactIcon =
-    "assets/icons/react-icon.png"
+    "/assets/icons/react-icon.png"
 
 
 reduxIcon =
-    "assets/icons/redux-icon.png"
+    "/assets/icons/redux-icon.png"
 
 
 socketIoIcon =
-    "assets/icons/socketio-icon.gif"
+    "/assets/icons/socketio-icon.gif"
 
 
 mongoDbIcon =
-    "assets/icons/mongodb-icon.png"
+    "/assets/icons/mongodb-icon.png"
 
 
 cssIcon =
-    "assets/icons/css-icon.png"
+    "/assets/icons/css-icon.png"
+
+
+elmIcon =
+    "/assets/icons/elm-icon.png"
+
+
+heartIcon =
+    "/assets/icons/heart-icon.png"
 
 
 type alias Project =
@@ -229,53 +245,65 @@ type alias Project =
 
 projectsList : List Project
 projectsList =
-    [ projectOne
-    , projectTwo
-    , projectThree
+    [ justSmashBricks
+    , hikr
+    , syllaboard
+    , portfolio
 
     -- , projectFour
     ]
 
 
-projectOne : Project
-projectOne =
+justSmashBricks : Project
+justSmashBricks =
     { name = "Just Smash Bricks"
     , description = "Breakout style game created with Kontra.js"
     , liveUrl = "https://parkercouch.github.io/brick-smashing-game/"
     , repoUrl = "https://github.com/parkercouch/brick-smashing-game"
-    , img = "assets/projects/just_smash_bricks_video.gif"
+    , img = "/assets/projects/just_smash_bricks_video.gif"
     , badges = [ htmlIcon, cssIcon, jsIcon ]
     }
 
 
-projectTwo : Project
-projectTwo =
+hikr : Project
+hikr =
     { name = "hikr"
     , description = "Social media to find hiking partners"
     , liveUrl = "https://hikr-app.herokuapp.com/"
     , repoUrl = "https://github.com/parkercouch/hikr"
-    , img = "assets/projects/hikr_video.gif"
+    , img = "/assets/projects/hikr_video.gif"
     , badges = [ nodeIcon, postgresIcon, socketIoIcon ]
     }
 
 
-projectThree : Project
-projectThree =
+syllaboard : Project
+syllaboard =
     { name = "Syllaboard"
     , description = "Dashboard for instructors and students to keep track of assignments."
     , liveUrl = "http://syllaboard.herokuapp.com/"
     , repoUrl = "https://github.com/parkercouch/syllaboard-client"
-    , img = "assets/projects/syllaboard_video.gif"
+    , img = "/assets/projects/syllaboard_video.gif"
     , badges = [ reactIcon, reduxIcon, mongoDbIcon ]
     }
 
 
-projectFour : Project
-projectFour =
+siamOnline : Project
+siamOnline =
     { name = "Siam Online"
     , description = "Multiplayer game made with Elm, Elixir, and Phoenix"
     , liveUrl = ""
     , repoUrl = ""
-    , img = "assets/square.png"
+    , img = "/assets/square.png"
     , badges = [ htmlIcon, htmlIcon, htmlIcon ]
+    }
+
+
+portfolio : Project
+portfolio =
+    { name = "Portfolio"
+    , description = "Personal portfolio website made in Elm"
+    , liveUrl = "https://parkercouch.github.io/"
+    , repoUrl = "https://github.com/parkercouch/portfolio"
+    , img = "/assets/projects/portfolio_video.gif"
+    , badges = [ heartIcon, elmIcon, heartIcon ]
     }

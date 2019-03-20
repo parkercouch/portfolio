@@ -23,9 +23,17 @@ type alias Model =
     }
 
 
-init : Session -> ( Model, Cmd Msg )
-init session =
-    ( Model session False 0, Cmd.none )
+init : Session -> Int -> ( Model, Cmd Msg )
+init session id =
+    let
+        zoom =
+            if id /= 0 then
+                True
+
+            else
+                False
+    in
+    ( Model session zoom id, Cmd.none )
 
 
 
@@ -144,9 +152,9 @@ handGallery : Gallery
 handGallery =
     { title = "Hands"
     , artwork =
-        [ Artwork "Reaching" "assets/art_portfolio/hand_1.jpg"
-        , Artwork "Holding" "assets/art_portfolio/hand_2.jpg"
-        , Artwork "Uncovering" "assets/art_portfolio/hand_3.jpg"
+        [ Artwork "Reaching" "/assets/art_portfolio/hand_1.jpg"
+        , Artwork "Holding" "/assets/art_portfolio/hand_2.jpg"
+        , Artwork "Uncovering" "/assets/art_portfolio/hand_3.jpg"
         ]
     }
 
@@ -155,12 +163,12 @@ sketchGallery : Gallery
 sketchGallery =
     { title = "Sketches"
     , artwork =
-        [ Artwork "Coffee Shop 1" "assets/art_portfolio/sketch_1.jpg"
-        , Artwork "Coffee Shop 2" "assets/art_portfolio/sketch_2.jpg"
-        , Artwork "I like your hat" "assets/art_portfolio/sketch_3.jpg"
-        , Artwork "Studying" "assets/art_portfolio/sketch_4.jpg"
-        , Artwork "Look Up" "assets/art_portfolio/sketch_5.jpg"
-        , Artwork "Tiny Tree" "assets/art_portfolio/sketch_6.jpg"
+        [ Artwork "Coffee Shop 1" "/assets/art_portfolio/sketch_1.jpg"
+        , Artwork "Coffee Shop 2" "/assets/art_portfolio/sketch_2.jpg"
+        , Artwork "I like your hat" "/assets/art_portfolio/sketch_3.jpg"
+        , Artwork "Studying" "/assets/art_portfolio/sketch_4.jpg"
+        , Artwork "Look Up" "/assets/art_portfolio/sketch_5.jpg"
+        , Artwork "Tiny Tree" "/assets/art_portfolio/sketch_6.jpg"
         ]
     }
 
@@ -169,12 +177,12 @@ blackAndWhiteGallery : Gallery
 blackAndWhiteGallery =
     { title = "Black and White"
     , artwork =
-        [ Artwork "I" "assets/art_portfolio/b_and_w_1.jpg"
-        , Artwork "II" "assets/art_portfolio/b_and_w_2.jpg"
-        , Artwork "III" "assets/art_portfolio/b_and_w_3.jpg"
-        , Artwork "IV" "assets/art_portfolio/b_and_w_4.jpg"
-        , Artwork "V" "assets/art_portfolio/b_and_w_5.jpg"
-        , Artwork "VI" "assets/art_portfolio/b_and_w_6.jpg"
+        [ Artwork "I" "/assets/art_portfolio/b_and_w_1.jpg"
+        , Artwork "II" "/assets/art_portfolio/b_and_w_2.jpg"
+        , Artwork "III" "/assets/art_portfolio/b_and_w_3.jpg"
+        , Artwork "IV" "/assets/art_portfolio/b_and_w_4.jpg"
+        , Artwork "V" "/assets/art_portfolio/b_and_w_5.jpg"
+        , Artwork "VI" "/assets/art_portfolio/b_and_w_6.jpg"
         ]
     }
 
@@ -183,8 +191,8 @@ moonAndShroomGallery : Gallery
 moonAndShroomGallery =
     { title = "Moon and Shrooms"
     , artwork =
-        [ Artwork "Moon" "assets/art_portfolio/moon_and_shrooms_1.jpg"
-        , Artwork "Shrooms" "assets/art_portfolio/moon_and_shrooms_2.jpg"
+        [ Artwork "Moon" "/assets/art_portfolio/moon_and_shrooms_1.jpg"
+        , Artwork "Shrooms" "/assets/art_portfolio/moon_and_shrooms_2.jpg"
         ]
     }
 
@@ -193,8 +201,8 @@ energyGallery : Gallery
 energyGallery =
     { title = "Energy"
     , artwork =
-        [ Artwork "Travel" "assets/art_portfolio/energy_1.jpg"
-        , Artwork "Trance" "assets/art_portfolio/energy_2.jpg"
+        [ Artwork "Travel" "/assets/art_portfolio/energy_1.jpg"
+        , Artwork "Trance" "/assets/art_portfolio/energy_2.jpg"
         ]
     }
 
@@ -203,9 +211,9 @@ pastelGallery : Gallery
 pastelGallery =
     { title = "Pastels"
     , artwork =
-        [ Artwork "Meditation I" "assets/art_portfolio/minimal_1.jpg"
-        , Artwork "The Stars are Dancing" "assets/art_portfolio/pastel_sky.jpg"
-        , Artwork "Mantis Shrimp" "assets/art_portfolio/mantis_shrimp.jpg"
+        [ Artwork "Meditation I" "/assets/art_portfolio/minimal_1.jpg"
+        , Artwork "The Stars are Dancing" "/assets/art_portfolio/pastel_sky.jpg"
+        , Artwork "Mantis Shrimp" "/assets/art_portfolio/mantis_shrimp.jpg"
         ]
     }
 

@@ -54,7 +54,7 @@ type Model
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
-    ( HomeMod (Home.Model { key = key, url = url }), Cmd.none )
+    changeRouteTo (fromUrl url) (HomeMod (Home.Model { key = key, url = url }))
 
 
 
@@ -203,27 +203,27 @@ changeRouteTo route model =
                 |> updateWith HomeMod GotHomeMsg model
 
         Art ->
-            Art.init session
+            Art.init session 0
                 |> updateWith ArtMod GotArtMsg model
 
         ArtGallery galleryId ->
-            Art.init session
+            Art.init session galleryId
                 |> updateWith ArtMod GotArtMsg model
 
         Blog ->
-            Blog.init session
+            Blog.init session 0
                 |> updateWith BlogMod GotBlogMsg model
 
         BlogPost blogId ->
-            Blog.init session
+            Blog.init session blogId
                 |> updateWith BlogMod GotBlogMsg model
 
         Portfolio ->
-            Portfolio.init session
+            Portfolio.init session 0
                 |> updateWith PortfolioMod GotPortfolioMsg model
 
         ProjectDetails projectId ->
-            Portfolio.init session
+            Portfolio.init session projectId
                 |> updateWith PortfolioMod GotPortfolioMsg model
 
 
