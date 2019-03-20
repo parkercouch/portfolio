@@ -1,4 +1,4 @@
-module Portfolio exposing (Model, Msg(..), containerDiv, init, toSession, update, view)
+module Portfolio exposing (Model, Msg(..), init, toSession, update, view)
 
 import Browser
 import Browser.Dom as BD
@@ -84,21 +84,6 @@ links =
     , NavLink "Explorer" "/blog" False
     , NavLink "Developer" "" True
     ]
-
-
-containerDiv : List (Html Msg) -> Html Msg
-containerDiv elements =
-    div
-        [ classes
-            [ T.mw_100
-            , T.mw7_ns
-            , T.center
-            , T.pa0
-            , T.ph4_ns
-            , T.code
-            ]
-        ]
-        elements
 
 
 projects : List Project -> Html Msg

@@ -56,9 +56,4 @@ viewHeader links =
         ]
         [ h1 [ classes [ T.dib, T.f3, T.ma0, T.pa0 ] ] [ text "Parker Couch" ]
         , nav [ classes [ T.dib, T.flex, T.flex_row, T.ml2 ] ] parsedLinks
-
-        -- [ navLink "Artist" "" True
-        -- , navLink "Explorer" "/blog" False
-        -- , navLink "Developer" "/portfolio" False
-        -- ]
         ]
