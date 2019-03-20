@@ -61,6 +61,9 @@ view model =
     , mainContainer
         [ h1 [] [ text "Adventure Log" ]
         , p [] [ text "Under Construction" ]
+        , div [ classes [ T.mw7, T.center ] ]
+            [ img [ src landingPhoto, classes [ T.shadow_5, T.br1, "art-img" ] ] []
+            ]
         ]
     ]
 
@@ -83,3 +86,7 @@ links =
     , NavLink "Explorer" "" True
     , NavLink "Developer" "/portfolio" False
     ]
+
+
+landingPhoto =
+    "/assets/adventures/bike_under_bridge.jpg"

@@ -56,6 +56,7 @@ mainContainer elements =
             [ T.fl
             , T.w_100
             , T.tc
+            , T.vh_100
             ]
         ]
         elements
