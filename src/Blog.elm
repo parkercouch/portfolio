@@ -4,7 +4,7 @@ import Browser
 import Browser.Dom as BD
 import Browser.Navigation as Nav
 import Html exposing (Html, a, button, div, h1, h2, h3, header, img, nav, p, text)
-import Html.Attributes exposing (class, classList, href, src, style)
+import Html.Attributes exposing (alt, class, classList, href, src, style)
 import Html.Events exposing (onClick)
 import Nav exposing (NavLink, viewHeader)
 import Tachyons exposing (classes)
@@ -62,7 +62,7 @@ view model =
         [ h1 [] [ text "Adventure Log" ]
         , p [] [ text "Under Construction" ]
         , div [ classes [ T.mw7, T.center ] ]
-            [ img [ src landingPhoto, classes [ T.shadow_5, T.br1, "art-img" ] ] []
+            [ img [ src landingPhoto, alt "Bike under bridge", classes [ T.shadow_5, T.br1, "art-img" ] ] []
             ]
         ]
     ]

@@ -4,7 +4,7 @@ import Browser
 import Browser.Dom as BD
 import Browser.Navigation as Nav
 import Html exposing (Html, a, button, div, h1, h2, h3, header, img, nav, p, section, text)
-import Html.Attributes exposing (class, classList, href, src, style)
+import Html.Attributes exposing (alt, class, classList, href, src, style)
 import Html.Events exposing (onClick)
 import Nav exposing (NavLink, viewHeader)
 import Tachyons exposing (classes)
@@ -49,6 +49,7 @@ type alias Gallery =
 type alias Artwork =
     { title : String
     , url : String
+    , altText : String
     }
 
 
@@ -118,7 +119,7 @@ artPiece : Artwork -> Html Msg
 artPiece art =
     div [ classes [ T.mw7, T.center ] ]
         [ h3 [ classes [ T.f3, T.tl, T.pa2, T.mb0 ] ] [ text art.title ]
-        , img [ src art.url, classes [ T.shadow_5, T.br1, "art-img" ] ] []
+        , img [ src art.url, alt art.altText, classes [ T.shadow_5, T.br1, "art-img" ] ] []
         ]
 
 
@@ -152,9 +153,9 @@ handGallery : Gallery
 handGallery =
     { title = "Hands"
     , artwork =
-        [ Artwork "Reaching" "/assets/art_portfolio/hand_1.jpg"
-        , Artwork "Holding" "/assets/art_portfolio/hand_2.jpg"
-        , Artwork "Uncovering" "/assets/art_portfolio/hand_3.jpg"
+        [ Artwork "Reaching" "/assets/art_portfolio/hand_1.jpg" "Hand reaching for the moon"
+        , Artwork "Holding" "/assets/art_portfolio/hand_2.jpg" "Hand holding the moon"
+        , Artwork "Uncovering" "/assets/art_portfolio/hand_3.jpg" "Hand cutting through mountains"
         ]
     }
 
@@ -163,12 +164,12 @@ sketchGallery : Gallery
 sketchGallery =
     { title = "Sketches"
     , artwork =
-        [ Artwork "Coffee Shop 1" "/assets/art_portfolio/sketch_1.jpg"
-        , Artwork "Coffee Shop 2" "/assets/art_portfolio/sketch_2.jpg"
-        , Artwork "I like your hat" "/assets/art_portfolio/sketch_3.jpg"
-        , Artwork "Studying" "/assets/art_portfolio/sketch_4.jpg"
-        , Artwork "Look Up" "/assets/art_portfolio/sketch_5.jpg"
-        , Artwork "Tiny Tree" "/assets/art_portfolio/sketch_6.jpg"
+        [ Artwork "Coffee Shop 1" "/assets/art_portfolio/sketch_1.jpg" "Sketch of people in coffee shop"
+        , Artwork "Coffee Shop 2" "/assets/art_portfolio/sketch_2.jpg" "Sketch of person sitting in chair"
+        , Artwork "I like your hat" "/assets/art_portfolio/sketch_3.jpg" "Sketch of two people with the same hat"
+        , Artwork "Studying" "/assets/art_portfolio/sketch_4.jpg" "Sketch of someone looking at their phone"
+        , Artwork "Look Up" "/assets/art_portfolio/sketch_5.jpg" "Sketch of an overhead light"
+        , Artwork "Tiny Tree" "/assets/art_portfolio/sketch_6.jpg" "Sketch of a small tree in a pot"
         ]
     }
 
@@ -177,12 +178,12 @@ blackAndWhiteGallery : Gallery
 blackAndWhiteGallery =
     { title = "Black and White"
     , artwork =
-        [ Artwork "I" "/assets/art_portfolio/b_and_w_1.jpg"
-        , Artwork "II" "/assets/art_portfolio/b_and_w_2.jpg"
-        , Artwork "III" "/assets/art_portfolio/b_and_w_3.jpg"
-        , Artwork "IV" "/assets/art_portfolio/b_and_w_4.jpg"
-        , Artwork "V" "/assets/art_portfolio/b_and_w_5.jpg"
-        , Artwork "VI" "/assets/art_portfolio/b_and_w_6.jpg"
+        [ Artwork "I" "/assets/art_portfolio/b_and_w_1.jpg" "Black and white drawing of trees"
+        , Artwork "II" "/assets/art_portfolio/b_and_w_2.jpg" "Ink painting of a tree"
+        , Artwork "III" "/assets/art_portfolio/b_and_w_3.jpg" "Ink painting of a bush"
+        , Artwork "IV" "/assets/art_portfolio/b_and_w_4.jpg" "Ink painting of a tree trunk"
+        , Artwork "V" "/assets/art_portfolio/b_and_w_5.jpg" "Ink painting of a cliff"
+        , Artwork "VI" "/assets/art_portfolio/b_and_w_6.jpg" "Abstract ink painting with lines and dots"
         ]
     }
 
@@ -191,8 +192,8 @@ moonAndShroomGallery : Gallery
 moonAndShroomGallery =
     { title = "Moon and Shrooms"
     , artwork =
-        [ Artwork "Moon" "/assets/art_portfolio/moon_and_shrooms_1.jpg"
-        , Artwork "Shrooms" "/assets/art_portfolio/moon_and_shrooms_2.jpg"
+        [ Artwork "Moon" "/assets/art_portfolio/moon_and_shrooms_1.jpg" "Pastel painting of the moon"
+        , Artwork "Shrooms" "/assets/art_portfolio/moon_and_shrooms_2.jpg" "Pastel painting of mushrooms"
         ]
     }
 
@@ -201,8 +202,8 @@ energyGallery : Gallery
 energyGallery =
     { title = "Energy"
     , artwork =
-        [ Artwork "Travel" "/assets/art_portfolio/energy_1.jpg"
-        , Artwork "Trance" "/assets/art_portfolio/energy_2.jpg"
+        [ Artwork "Travel" "/assets/art_portfolio/energy_1.jpg" "Abstract drawing with lots of swirls and colorful lines"
+        , Artwork "Trance" "/assets/art_portfolio/energy_2.jpg" "Abstract drawing with two large circles and colors cutting through them"
         ]
     }
 
@@ -211,9 +212,9 @@ pastelGallery : Gallery
 pastelGallery =
     { title = "Pastels"
     , artwork =
-        [ Artwork "Meditation I" "/assets/art_portfolio/minimal_1.jpg"
-        , Artwork "The Stars are Dancing" "/assets/art_portfolio/pastel_sky.jpg"
-        , Artwork "Mantis Shrimp" "/assets/art_portfolio/mantis_shrimp.jpg"
+        [ Artwork "Meditation I" "/assets/art_portfolio/minimal_1.jpg" "Pastel painting of three spheres"
+        , Artwork "The Stars are Dancing" "/assets/art_portfolio/pastel_sky.jpg" "Pastel painting of mountain and starry sky"
+        , Artwork "Mantis Shrimp" "/assets/art_portfolio/mantis_shrimp.jpg" "Pastel painting of a mantis shrimp"
         ]
     }
 

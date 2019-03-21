@@ -169,7 +169,7 @@ bannerTitle title =
             , T.ph2
             ]
         ]
-        [ h2 [ classes [ T.f2 ] ] [ text title ]
+        [ h2 [ classes [ T.f3, T.f2_ns ] ] [ text title ]
         ]
 
 
