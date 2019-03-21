@@ -296,8 +296,6 @@ projectsList =
     , hikr
     , syllaboard
     , portfolio
-
-    -- , projectFour
     ]
 
 

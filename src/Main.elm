@@ -1,4 +1,4 @@
-module Main exposing (Model, Msg(..), init, main, subscriptions, update, view, viewLink)
+module Main exposing (Model, Msg(..), init, main, subscriptions, update, view)
 
 import Art
 import Blog
@@ -150,11 +150,6 @@ view model =
             { title = "Developer - Parker Couch"
             , body = List.map (Html.map GotPortfolioMsg) (Portfolio.view portfolio)
             }
-
-
-viewLink : String -> Html msg
-viewLink path =
-    li [] [ a [ href path ] [ text path ] ]
 
 
 type Route
