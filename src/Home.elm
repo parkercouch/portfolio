@@ -153,7 +153,7 @@ subheading =
                        , T.self_center_ns
                        ]
                 )
-            , href "/blog/1"
+            , href "/blog"
             ]
             [ text "Explorer" ]
         , a
