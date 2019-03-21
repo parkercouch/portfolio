@@ -68,7 +68,8 @@ view : Model -> List (Html Msg)
 view model =
     [ viewHeader links
     , mainContainer
-        [ h1 [ classes [ T.mw7, T.center, T.tl, T.ph2, T.f1 ] ] [ text "Projects" ]
+        [ subheading
+        , h1 [ classes [ T.mw7, T.center, T.tl, T.ph2, T.f1 ] ] [ text "Projects" ]
         , projects projectsList
         ]
     ]
@@ -84,6 +85,52 @@ mainContainer elements =
             ]
         ]
         elements
+
+
+subHeadingLink : String -> String -> Html Msg
+subHeadingLink url label =
+    a
+        [ classes
+            [ T.f5
+            , T.ma0
+            , T.h2
+            , T.w4
+            , T.pt2
+            , T.no_underline
+            , T.mv2
+            , T.pr3
+            , T.shadow_5
+            , T.shadow_hover
+            , T.br1
+            , T.dark_gray
+            ]
+        , href url
+        , Html.Attributes.target "_blank"
+        ]
+        [ text label ]
+
+
+subheading : Html Msg
+subheading =
+    div
+        [ classes
+            [ T.mw7
+            , T.center
+            , T.mb4_ns
+            , T.mb1
+            , T.flex
+            , T.flex_column
+            , T.content_center
+            , T.items_end
+            , T.ph3
+            , T.ph4_ns
+            , T.pt1
+            , T.tr
+            ]
+        ]
+        [ subHeadingLink "https://github.com/parkercouch" "Github"
+        , subHeadingLink "https://www.linkedin.com/in/parkercouch/" "Resume"
+        ]
 
 
 links : List NavLink

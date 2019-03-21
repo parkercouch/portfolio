@@ -98,10 +98,6 @@ title =
         ]
 
 
-
--- code f3 ma0 h3 w5 pt3 tc-ns order-0 no-underline mv2 pr3 shadow-5 shadow-hover br1 black order-0 self-start-ns
-
-
 subHeadingLink : List String
 subHeadingLink =
     [ T.code
