@@ -87,23 +87,37 @@ mainContainer elements =
         elements
 
 
+subHeadingLinkStyles : List String
+subHeadingLinkStyles =
+    [ T.f5
+    , T.ma0
+    , T.h2
+    , T.w4
+    , T.pt2
+    , T.no_underline
+    , T.mv2
+    , T.pr3
+    , T.shadow_5
+    , T.shadow_hover
+    , T.br1
+    , T.dark_gray
+    ]
+
+
+subHeadingDownloadLink : String -> String -> Html Msg
+subHeadingDownloadLink url label =
+    a
+        [ classes subHeadingLinkStyles
+        , href url
+        , Html.Attributes.download ""
+        ]
+        [ text label ]
+
+
 subHeadingLink : String -> String -> Html Msg
 subHeadingLink url label =
     a
-        [ classes
-            [ T.f5
-            , T.ma0
-            , T.h2
-            , T.w4
-            , T.pt2
-            , T.no_underline
-            , T.mv2
-            , T.pr3
-            , T.shadow_5
-            , T.shadow_hover
-            , T.br1
-            , T.dark_gray
-            ]
+        [ classes subHeadingLinkStyles
         , href url
         , Html.Attributes.target "_blank"
         ]
@@ -129,7 +143,8 @@ subheading =
             ]
         ]
         [ subHeadingLink "https://github.com/parkercouch" "Github"
-        , subHeadingLink "https://www.linkedin.com/in/parkercouch/" "Resume"
+        , subHeadingLink "https://www.linkedin.com/in/parkercouch/" "LinkedIn"
+        , subHeadingDownloadLink "/assets/Parker_Couch_Resume.pdf" "Resume"
         ]
 
 
